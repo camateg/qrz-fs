@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "description": "CL Search for Joel",
   "dependencies": {
-      "feedparser"      : "0.16.x"
-    , "async"		: "0.2.x"
+      "async"		: "0.2.x"
     , "request"		: "2.33.x"
     , "express"    	: "3.4.x" 
     , "cheerio"    	: "0.13.x"
