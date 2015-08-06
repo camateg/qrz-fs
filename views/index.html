@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<title>QRZ Junk</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js"></script>
+		<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+
+		<style>
+			.item { width: 96%; margin: 2% 2% 0px 2%; border: 1px solid gray;}
+			#target, .row { width: 100%; }
+		</style>
+
+		<script>
+			function refresh() {
+				$.getJSON('/json', function(data) {
+					for (i in data) {
+						var template = $('#row').html();
+						var rendered = Mustache.render(template, {row: data[i]});
+
+						$('#target').append(rendered);
+					}
+				});
+			}
+
+
+			$(document).ready(function() {
+				refresh();
+			});
+		</script>
+
+		<script id="row" type="xtmpl-mustache">
+			<tr>
+				<td class="row"><a target="_qrz" class="item btn" href="{{ row.url }}">{{ row.txt }}</a></td>
+			</tr>
+		</script>
+
+	</head>
+
+	<body>
+		<table id="target"></div>
+	</body>
+			
