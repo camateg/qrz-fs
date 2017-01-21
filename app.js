@@ -8,7 +8,7 @@ var app = express();
 
 var port = process.env.PORT || 5000;
 
-app.get('/', parse_list, shuffle, pretty_out);
+app.use(express.static(__dirname+'/public'));
 app.get('/json', parse_list, shuffle, out);
 
 function parse_list(req, res, next) {
@@ -83,19 +83,7 @@ function out(req, res) {
    
     output.push(tmp); 
   }
-  res.send(output);
-}
-
-function pretty_out(req, res) {
-  res.stash = res.stash || {};
-
-  fs.readFile('views/index.html', function(err, data) {
-    if (err) {
-      console.log(err);
-    }
-    res.write(data);
-    res.end();
-  }); 
+  res.json(output);
 }
 
 module.exports = app;
