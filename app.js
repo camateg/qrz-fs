@@ -8,8 +8,6 @@ var app = express();
 
 var port = process.env.PORT || 5000;
 
-app.listen(port);
-
 app.get('/', parse_list, shuffle, pretty_out);
 app.get('/json', parse_list, shuffle, out);
 
@@ -98,4 +96,11 @@ function pretty_out(req, res) {
     res.write(data);
     res.end();
   }); 
+}
+
+module.exports = app;
+if (!module.parent) {
+  app.listen(port, function() {
+    console.log("Server listening on port " + port);
+  });
 }

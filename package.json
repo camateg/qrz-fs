@@ -3,9 +3,17 @@
   "version": "0.0.1",
   "description": "CL Search for Joel",
   "dependencies": {
-      "async"		: "0.2.x"
-    , "request"		: "2.33.x"
-    , "express"    	: "3.4.x" 
-    , "cheerio"    	: "0.13.x"
+    "async": "0.2.x",
+    "request": "2.79.x",
+    "express": "3.4.x",
+    "cheerio": "0.22.x"
+  },
+  "devDependencies": {
+    "node-phantom": "*",
+    "mocha": "*",
+    "assert": "*"
+  },
+  "scripts": {
+    "test": "phantomjs test/index2.js"
   }
-}    
+}
