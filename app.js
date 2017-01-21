@@ -1,8 +1,7 @@
 var request = require('request')
    ,express = require('express')
    ,cheerio = require('cheerio')
-   ,async = require('async')
-   ,fs = require('fs');
+   ,async = require('async');
 
 var app = express();
 
