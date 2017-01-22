@@ -57,7 +57,7 @@ function get_page_links(url, cb) {
           var lnk = {};
    
           lnk.url = url;
-          lnk.txt = $(this).text();
+          lnk.txt = $(this).text().replace(/\t/g,"").replace(/\n/g," ");;
 	  lnks.push(lnk); 
 	}
       });
