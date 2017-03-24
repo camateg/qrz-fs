@@ -97,8 +97,6 @@ function rss_out(req, res) {
       "site_url": "https://qrz-fs.herokuapp.com"
     }
   );
-  console.log(res.stash);
-  console.log(res.stash.biglist.length);
   var list = res.stash.biglist;
   for(ct=0;ct<list.length;ct++) {
     feed.item(
