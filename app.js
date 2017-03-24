@@ -101,8 +101,10 @@ function rss_out(req, res) {
   for(ct=0;ct<list.length;ct++) {
     feed.item(
       { "title": list[ct].txt,
-        "description": "<a href=\"" + list[ct].url + "\">" + list[ct].txt + "</a>"
+        "description": list[ct].txt,
+        "url": list[ct].url
       });
+    console.log(feed);
   }
 
   res.setHeader('content-type', 'application/rss+xml');
