@@ -6,6 +6,7 @@
     "async": "0.2.x",
     "request": "2.79.x",
     "express": "3.4.x",
-    "cheerio": "0.22.x"
+    "cheerio": "0.22.x",
+    "rss": "x"
   }
 }

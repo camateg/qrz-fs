@@ -1,7 +1,8 @@
 var request = require('request')
    ,express = require('express')
    ,cheerio = require('cheerio')
-   ,async = require('async');
+   ,async = require('async')
+   ,RSS = require('rss');
 
 var app = express();
 
@@ -9,6 +10,7 @@ var port = process.env.PORT || 5000;
 
 app.use(express.static(__dirname+'/public'));
 app.get('/json', parse_list, shuffle, out);
+app.get('/rss', parse_list, shuffle, rss_out);
 
 function parse_list(req, res, next) {
   //var core_url = 'http://forums.qrz.com/forumdisplay.php?7-Ham-Radio-Gear-For-Sale/page';
@@ -84,6 +86,30 @@ function out(req, res) {
   }
   res.json(output);
 }
+
+function rss_out(req, res) {
+  res.stash = res.stash || {};
+
+  var feed = new RSS(
+    {
+      "title": "QRZ For Sale",
+      "feed_url": "https://qrz-fs.herokuapp.com/rss",
+      "site_url": "https://qrz-fs.herokuapp.com"
+    }
+  );
+  console.log(res.stash);
+  console.log(res.stash.biglist.length);
+  var list = res.stash.biglist;
+  for(ct=0;ct<list.length;ct++) {
+    feed.item(
+      { "title": list[ct].txt,
+        "description": "<a href=\"" + list[ct].url + "\">" + list[ct].txt + "</a>"
+      });
+  }
+
+  res.setHeader('content-type', 'application/rss+xml');
+  res.send(feed.xml({indent: true})); 
+};
 
 module.exports = app;
 if (!module.parent) {
