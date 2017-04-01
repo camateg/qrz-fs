@@ -9,8 +9,42 @@ var app = express();
 var port = process.env.PORT || 5000;
 
 app.use(express.static(__dirname+'/public'));
+app.get('/item', parse_page, page_json_out);
 app.get('/json', parse_list, shuffle, out);
 app.get('/rss', parse_list, shuffle, rss_out);
+
+function parse_page(req, res, next) {
+  var url = req.param('url');
+  var ret = {};
+  ret['url'] = url;
+  ret['images'] = [];
+  res.stash = res.stash || {};
+  
+  request(url, function(err, resp, html) {
+    if(!err && resp.statusCode == 200) {
+      $ = cheerio.load(html);
+      var callsign = $('h3.userText > a').html();
+      ret['callsign'] = callsign;
+      var message = $('ol#messageList > li:first-child .messageContent > article').text();
+      ret['message'] = message;
+      var images = $('ol#messageList > li:first-child .messageContent > article img');
+      images.each(function() {
+        var src = $(this).attr('src');
+        
+        if (src.match(/^(htt.*)/)) {
+          ret['images'].push(src);
+        };
+      });
+    };
+    res.stash.ret = ret;
+    return next();
+  });
+};
+
+function page_json_out(req, res) {
+  res.stash = res.stash || {};
+  res.send(res.stash.ret);
+};
 
 function parse_list(req, res, next) {
   //var core_url = 'http://forums.qrz.com/forumdisplay.php?7-Ham-Radio-Gear-For-Sale/page';

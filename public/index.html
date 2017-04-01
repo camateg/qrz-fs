@@ -16,7 +16,7 @@
   <div class="navbar-inner">
     <div class="container">
       <div class="navbar-brand">
-         QRZ Ads <a href="/json"><img src="/json.png" /></a>
+         QRZ Ads <a href="/rss"><img style="width:20px;" src="/rss.png" /></a>
       </div>
     </div>
   </div>
@@ -24,12 +24,31 @@
 
 <table style="margin-top: 80px;" class="table table-striped">
     <tr ng-repeat="x in myAds">
-      <td><a target="_kqv" href="{{ x.url }}">{{ x.txt }}</a></td>
+      <td><a class="sale-item" data-org-url="{{x.url}}" data-url="/item?url={{x.url}}" href="/item?url={{ x.url }}">{{ x.txt }}</a>
+      <div class="sale-data"></div></td>
     </tr>
 </table>
 <br />
 
 <script>
+
+$(document).ready(function() {
+  $('body').on('click', '.sale-item', function(e) {
+    e.preventDefault();
+    $('.sale-data').html('');
+    var data_url = $(this).attr('data-url');
+    var data_org_url = $(this).attr('data-org-url');
+    var ele = $(this);
+    $.getJSON(data_url, function(ret) {
+      console.log(ret['images']);
+      var img_html = '';
+      ret['images'].forEach(function(img) {
+        img_html += '<img style="margin-top: 3px; margin-left: 10%; width: 80%" src="' + img + '"/><br />';
+      });
+      ele.parent().find('.sale-data').html('<b><a target="_org" href="' + data_org_url + '">' + ret['callsign'] + ' says: </b></a><br />' + ret['message'] + img_html);
+    });
+  });
+});
 
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
